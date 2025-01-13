@@ -14,7 +14,7 @@ const initialNodes = [
 
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
-const SaveRestore = () => {
+const SaveRestore = ({ onSaveFlow }) => {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
@@ -30,8 +30,9 @@ const SaveRestore = () => {
             const flowJson = JSON.stringify(flow, null, 2);
             console.log(flowJson);
             localStorage.setItem(flowKey, JSON.stringify(flow));
+            onSaveFlow(flowJson);
         }
-    }, [rfInstance]);
+    }, [rfInstance, onSaveFlow]);
 
     const onRestore = useCallback(() => {
         const restoreFlow = async () => {

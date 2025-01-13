@@ -8,11 +8,16 @@ body {
 }
 
 #app {
-  width: 80vw;
-  height: 80vh;
+  width: 100vw;
+  height: 100vh;
 }
 
-#flow {
+.Flow {
   width: 80vw;
-  height: 80vh;
+  height: 40vh;
+}
+
+.Output {
+  width: 80vw;
+  height: 40vh;
 }
