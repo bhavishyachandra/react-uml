@@ -37,6 +37,7 @@ const SaveRestore = ({ onSaveFlow }) => {
     const onRestore = useCallback(() => {
         const restoreFlow = async () => {
             const flow = JSON.parse(localStorage.getItem(flowKey));
+            onSaveFlow(JSON.stringify(flow, null, 2));
 
             if (flow) {
                 const { x = 0, y = 0, zoom = 1 } = flow.viewport;
