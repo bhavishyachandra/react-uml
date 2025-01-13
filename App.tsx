@@ -92,11 +92,8 @@ const SaveRestore = () => {
   );
 };
 
-import MyComponent from './MyComponent'; // Import the new component
-
 export default () => (
   <ReactFlowProvider>
     <SaveRestore />
-    <MyComponent /> {/* Use the new component */}
   </ReactFlowProvider>
 );
