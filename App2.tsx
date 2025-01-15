@@ -50,7 +50,7 @@ const App2 = () => {
             const modelDataJson = JSON.stringify(model);
             localStorage.setItem('apollon-diagram', modelDataJson);
             console.log(modelDataJson); // Log to console
-            alert("Diagram saved!");
+            alert("Diagram saved! Check console for the model data in json format.");
         }
     };
 
