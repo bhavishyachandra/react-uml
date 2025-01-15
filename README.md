@@ -54,6 +54,7 @@ This project is deployed to Vercel. You can access the live application at [http
 - Click the "Load Diagram" button to load the diagram from localStorage.
 - Click the "Convert to PlantUML" button to convert the diagram to PlantUML format.
 - Copy the PlantUML code by clicking the "Copy" button next to the "PlantUML Code" heading.
+- **Note:** After saving the diagram, please check the console logs to see the output.
 
 ### Project Structure
 
