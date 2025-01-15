@@ -1,6 +1,12 @@
-# React Drag Drop Save
+# React UML
+
+[![GitHub Workflow Status](https://github.com/bhavishyachandra/react-uml/actions/workflows/production.yml/badge.svg)](https://github.com/bhavishyachandra/react-uml/actions/workflows/production.yml)
 
 This project demonstrates a React application that integrates the Apollon editor for creating UML diagrams. It allows you to save and load diagrams, and convert them to PlantUML format.
+
+### Deployment
+
+This project is deployed to Vercel. You can access the live application at [https://react-uml.vercel.app/](https://react-uml.vercel.app/).
 
 ## Features
 
@@ -21,8 +27,8 @@ This project demonstrates a React application that integrates the Apollon editor
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/your-username/react-drag-drop-save.git
-   cd react-drag-drop-save
+   git clone https://github.com/bhavishyachandra/react-uml.git
+   cd react-uml
    ```
 
 2. Install the dependencies:
