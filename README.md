@@ -59,8 +59,6 @@ This project is deployed to Vercel. You can access the live application at [http
 
 - `App2.tsx`: Main component that integrates the Apollon editor and provides functionality to save, load, and convert diagrams.
 - `index.jsx`: Entry point of the application.
-- `SaveRestore.tsx`: Component for saving and restoring diagrams using React Flow.
-- `App.tsx`: Another main component that integrates React Flow for drag-and-drop functionality.
 
 ### License
 
