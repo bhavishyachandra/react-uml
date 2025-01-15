@@ -26,7 +26,9 @@ const App2 = () => {
             setEditor(apollonEditor);
 
             return () => {
-                apollonEditor.destroy();
+                setTimeout(() => {
+                    apollonEditor.destroy();
+                }, 0);
             };
         }
     }, [diagramData]);
