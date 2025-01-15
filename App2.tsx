@@ -145,7 +145,7 @@ const App2 = () => {
             <button onClick={loadDiagram} disabled={!localStorage.getItem('apollon-diagram')}>
                 Load Diagram
             </button>
-            <button onClick={convertToPlantUML} style={{ marginLeft: "10px" }}>
+            <button onClick={convertToPlantUML} style={{ marginLeft: "10px" }} disabled={diagramType !== "ClassDiagram"}>
                 Convert to PlantUML
             </button>
             {plantUML && (
@@ -158,6 +158,9 @@ const App2 = () => {
                     </h2>
                     <textarea value={plantUML} readOnly style={{ width: "100%", height: "200px" }} />
                 </div>
+            )}
+            {diagramType !== "ClassDiagram" && (
+                <p style={{ color: "red" }}>Note: Saving to UML only works with Class Diagrams for now.</p>
             )}
         </div>
     );
