@@ -107,7 +107,7 @@ const App2 = () => {
 
     return (
         <div>
-            <h1>Apollon Editor Example in App2</h1>
+            <h1>React UML Converter</h1>
             <div
                 ref={editorContainer}
                 style={{
