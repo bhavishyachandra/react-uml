@@ -10,7 +10,7 @@ const App2 = () => {
         if (editorContainer.current) {
             const options: ApollonOptions = {
                 mode: ApollonMode.Modelling,
-                model: {
+                model: diagramData || {
                     type: "ClassDiagram",
                     elements: {},
                     relationships: {},
@@ -24,7 +24,6 @@ const App2 = () => {
             const apollonEditor = new ApollonEditor(editorContainer.current, options);
             setEditor(apollonEditor);
 
-
             return () => {
                 apollonEditor.destroy();
             };
@@ -35,14 +34,19 @@ const App2 = () => {
         if (editor) {
             const model = editor.model;
             setDiagramData(model);
-            console.log("Saved Diagram Data:", model); // Log to console
+            const modelDataJson = JSON.stringify(model);
+            localStorage.setItem('apollon-diagram', modelDataJson);
+            console.log(modelDataJson); // Log to console
             alert("Diagram saved!");
         }
     };
 
     const loadDiagram = () => {
-        if (editor && diagramData) {
-            editor.model = diagramData;
+        const savedModel = localStorage.getItem('apollon-diagram');
+        if (editor && savedModel) {
+            const model = JSON.parse(savedModel);
+            editor.model = model;
+            setDiagramData(model);
             alert("Diagram loaded!");
         }
     };
@@ -62,7 +66,7 @@ const App2 = () => {
             <button onClick={saveDiagram} style={{ marginRight: "10px" }}>
                 Save Diagram
             </button>
-            <button onClick={loadDiagram} disabled={!diagramData}>
+            <button onClick={loadDiagram} disabled={!localStorage.getItem('apollon-diagram')}>
                 Load Diagram
             </button>
         </div>
