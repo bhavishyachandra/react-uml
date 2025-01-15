@@ -7,8 +7,11 @@ const App2 = () => {
     const [diagramData, setDiagramData] = useState<UMLModel | null>(null);
     const [plantUML, setPlantUML] = useState<string>("");
     const [diagramType, setDiagramType] = useState<UMLDiagramType>("ClassDiagram");
+    const isMounted = useRef(false);
 
     useEffect(() => {
+        isMounted.current = true;
+
         if (editorContainer.current) {
             const options: ApollonOptions = {
                 type: diagramType,
@@ -27,11 +30,17 @@ const App2 = () => {
             setEditor(apollonEditor);
 
             return () => {
-                setTimeout(() => {
-                    apollonEditor.destroy();
-                }, 0);
+                if (isMounted.current) {
+                    setTimeout(() => {
+                        apollonEditor.destroy();
+                    }, 0);
+                }
             };
         }
+
+        return () => {
+            isMounted.current = false;
+        };
     }, [diagramData, diagramType]);
 
     const saveDiagram = () => {
