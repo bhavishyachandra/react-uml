@@ -1,18 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ApollonEditor, UMLModel, ApollonOptions, ApollonMode } from "@ls1intum/apollon";
+import { ApollonEditor, UMLModel, ApollonOptions, ApollonMode, UMLDiagramType } from "@ls1intum/apollon";
 
 const App2 = () => {
     const editorContainer = useRef(null);
     const [editor, setEditor] = useState<ApollonEditor | null>(null);
     const [diagramData, setDiagramData] = useState<UMLModel | null>(null);
     const [plantUML, setPlantUML] = useState<string>("");
+    const [diagramType, setDiagramType] = useState<UMLDiagramType>("ClassDiagram");
 
     useEffect(() => {
         if (editorContainer.current) {
             const options: ApollonOptions = {
-                mode: ApollonMode.Modelling,
+                type: diagramType,
                 model: diagramData || {
-                    type: "ClassDiagram",
+                    type: diagramType,
                     elements: {},
                     relationships: {},
                     interactive: { elements: {}, relationships: {} },
@@ -31,7 +32,7 @@ const App2 = () => {
                 }, 0);
             };
         }
-    }, [diagramData]);
+    }, [diagramData, diagramType]);
 
     const saveDiagram = () => {
         if (editor) {
@@ -101,6 +102,10 @@ const App2 = () => {
         return plantUML;
     };
 
+    const handleDiagramTypeChange = (event) => {
+        setDiagramType(event.target.value as UMLDiagramType);
+    };
+
     const copyToClipboard = () => {
         navigator.clipboard.writeText(plantUML);
     };
@@ -108,6 +113,23 @@ const App2 = () => {
     return (
         <div>
             <h1>React UML Converter</h1>
+            <div>
+                <label htmlFor="diagramType">Diagram Type: </label>
+                <select id="diagramType" value={diagramType} onChange={handleDiagramTypeChange}>
+                    <option value="Flowchart">Flowchart</option>
+                    <option value="ClassDiagram">Class Diagram</option>
+                    <option value="ObjectDiagram">Object Diagram</option>
+                    <option value="ActivityDiagram">Activity Diagram</option>
+                    <option value="UseCaseDiagram">Use Case Diagram</option>
+                    <option value="CommunicationDiagram">Communication Diagram</option>
+                    <option value="ComponentDiagram">Component Diagram</option>
+                    <option value="DeploymentDiagram">Deployment Diagram</option>
+                    <option value="PetriNet">Petri Net</option>
+                    <option value="ReachabilityGraph">Reachability Graph</option>
+                    <option value="SyntaxTree">Syntax Tree</option>
+                    <option value="BPMN">BPMN</option>
+                </select>
+            </div>
             <div
                 ref={editorContainer}
                 style={{
