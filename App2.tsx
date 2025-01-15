@@ -101,6 +101,10 @@ const App2 = () => {
         return plantUML;
     };
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(plantUML);
+    };
+
     return (
         <div>
             <h1>Apollon Editor Example in App2</h1>
@@ -123,9 +127,14 @@ const App2 = () => {
                 Convert to PlantUML
             </button>
             {plantUML && (
-                <div style={{ marginTop: "20px" }}>
-                    <h2>PlantUML Code</h2>
-                    <pre>{plantUML}</pre>
+                <div style={{ marginTop: "20px", position: "relative" }}>
+                    <h2>
+                        PlantUML Code
+                        <button onClick={copyToClipboard} style={{ marginLeft: "10px" }}>
+                            Copy
+                        </button>
+                    </h2>
+                    <textarea value={plantUML} readOnly style={{ width: "100%", height: "200px" }} />
                 </div>
             )}
         </div>
