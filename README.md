@@ -36,7 +36,7 @@ This project demonstrates a React application that integrates the Apollon editor
 1. Start the development server:
 
    ```sh
-   npm start
+   npm run dev
    ```
 
 2. Open your browser and navigate to `http://localhost:5173`.
