@@ -5,6 +5,7 @@ const App2 = () => {
     const editorContainer = useRef(null);
     const [editor, setEditor] = useState<ApollonEditor | null>(null);
     const [diagramData, setDiagramData] = useState<UMLModel | null>(null);
+    const [plantUML, setPlantUML] = useState<string>("");
 
     useEffect(() => {
         if (editorContainer.current) {
@@ -51,6 +52,53 @@ const App2 = () => {
         }
     };
 
+    const convertToPlantUML = () => {
+        const savedModel = localStorage.getItem('apollon-diagram');
+        if (savedModel) {
+            const model = JSON.parse(savedModel);
+            const plantUMLCode = generatePlantUML(model);
+            console.log(plantUMLCode);
+            setPlantUML(plantUMLCode);
+        }
+    };
+
+    const generatePlantUML = (model: UMLModel): string => {
+        let plantUML = "@startuml\n";
+
+        // Convert elements
+        for (const elementId in model.elements) {
+            const element = model.elements[elementId];
+            if (element.type === "Class" || element.type === "AbstractClass" || element.type === "Interface") {
+                const plantUmlText = element.type === "AbstractClass" ? "abstract class" : element.type;
+                plantUML += `${plantUmlText} ${element.name} {\n`;
+                if ('attributes' in element) {
+                    element.attributes.forEach(attrId => {
+                        const attr = model.elements[attrId];
+                        plantUML += `  ${attr.name}\n`;
+                    });
+                }
+                if ('methods' in element) {
+                    element.methods.forEach(methodId => {
+                        const method = model.elements[methodId];
+                        plantUML += `  ${method.name}\n`;
+                    });
+                }
+                plantUML += "}\n";
+            }
+        }
+
+        // Convert relationships
+        for (const relationshipId in model.relationships) {
+            const relationship = model.relationships[relationshipId];
+            const source = model.elements[relationship.source.element];
+            const target = model.elements[relationship.target.element];
+            plantUML += `${source.name} --> ${target.name}\n`;
+        }
+
+        plantUML += "@enduml";
+        return plantUML;
+    };
+
     return (
         <div>
             <h1>Apollon Editor Example in App2</h1>
@@ -69,6 +117,15 @@ const App2 = () => {
             <button onClick={loadDiagram} disabled={!localStorage.getItem('apollon-diagram')}>
                 Load Diagram
             </button>
+            <button onClick={convertToPlantUML} style={{ marginLeft: "10px" }}>
+                Convert to PlantUML
+            </button>
+            {plantUML && (
+                <div style={{ marginTop: "20px" }}>
+                    <h2>PlantUML Code</h2>
+                    <pre>{plantUML}</pre>
+                </div>
+            )}
         </div>
     );
 };
