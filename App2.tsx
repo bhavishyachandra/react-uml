@@ -31,9 +31,7 @@ const App2 = () => {
 
             return () => {
                 if (isMounted.current) {
-                    setTimeout(() => {
-                        apollonEditor.destroy();
-                    }, 0);
+                    apollonEditor.destroy();
                 }
             };
         }
