@@ -104,22 +104,49 @@ const App2 = () => {
         // Convert elements
         for (const elementId in model.elements) {
             const element = model.elements[elementId];
-            if (element.type === "Class" || element.type === "AbstractClass" || element.type === "Interface") {
-                const plantUmlText = element.type === "AbstractClass" ? "abstract class" : element.type;
-                plantUML += `${plantUmlText} ${element.name} {\n`;
-                if ('attributes' in element) {
-                    element.attributes.forEach(attrId => {
-                        const attr = model.elements[attrId];
-                        plantUML += `  ${attr.name}\n`;
-                    });
-                }
-                if ('methods' in element) {
-                    element.methods.forEach(methodId => {
-                        const method = model.elements[methodId];
-                        plantUML += `  ${method.name}\n`;
-                    });
-                }
-                plantUML += "}\n";
+            switch (element.type) {
+                case "Class":
+                case "AbstractClass":
+                case "Interface":
+                    const plantUmlText = element.type === "AbstractClass" ? "abstract class" : element.type;
+                    plantUML += `${plantUmlText} ${element.name} {\n`;
+                    if ('attributes' in element) {
+                        element.attributes.forEach(attrId => {
+                            const attr = model.elements[attrId];
+                            plantUML += `  ${attr.name}\n`;
+                        });
+                    }
+                    if ('methods' in element) {
+                        element.methods.forEach(methodId => {
+                            const method = model.elements[methodId];
+                            plantUML += `  ${method.name}\n`;
+                        });
+                    }
+                    plantUML += "}\n";
+                    break;
+                case "Enumeration":
+                    plantUML += `enum ${element.name} {\n`;
+                    if ('attributes' in element) {
+                        element.attributes.forEach(attrId => {
+                            const attr = model.elements[attrId];
+                            plantUML += `  ${attr.name}\n`;
+                        });
+                    }
+                    plantUML += "}\n";
+                    break;
+                case "Package":
+                    plantUML += `package ${element.name} {\n`;
+                    // Add elements inside the package
+                    for (const innerElementId in model.elements) {
+                        const innerElement = model.elements[innerElementId];
+                        if (innerElement.owner === element.id) {
+                            plantUML += `  ${innerElement.name}\n`;
+                        }
+                    }
+                    plantUML += "}\n";
+                    break;
+                default:
+                    break;
             }
         }
 
