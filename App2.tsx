@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { ApollonEditor, UMLModel, ApollonOptions, ApollonMode, UMLDiagramType } from "@ls1intum/apollon";
 
 const App2 = () => {
-    const editorContainer = useRef(null);
+    const editorContainer = useRef<HTMLDivElement>(null); // Type the ref correctly
     const [editor, setEditor] = useState<ApollonEditor | null>(null);
     const [diagramData, setDiagramData] = useState<UMLModel | null>(null);
     const [plantUML, setPlantUML] = useState<string>("");
@@ -21,7 +21,7 @@ const App2 = () => {
                     relationships: {},
                     interactive: { elements: {}, relationships: {} },
                     assessments: {},
-                    size: { width: 1000, height: 1000 },
+                    size: { width: editorContainer.current.clientWidth, height: editorContainer.current.clientHeight },
                     version: "3.0.0",
                 },
             };
