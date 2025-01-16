@@ -140,7 +140,7 @@ const App2 = () => {
                     for (const innerElementId in model.elements) {
                         const innerElement = model.elements[innerElementId];
                         if (innerElement.owner === element.id) {
-                            plantUML += `  ${innerElement.name}\n`;
+                            plantUML += `  ${innerElement.type} ${innerElement.name}\n`;
                         }
                     }
                     plantUML += "}\n";
