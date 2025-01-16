@@ -4,6 +4,7 @@ import { ApollonEditor, UMLModel, ApollonOptions, ApollonMode, UMLDiagramType } 
 const App2 = () => {
     const editorContainer = useRef<HTMLDivElement>(null); // Type the ref correctly
     const [editor, setEditor] = useState<ApollonEditor | null>(null);
+    const [savedDiagram, setSavedDiagram] = useState<UMLModel | null>(null);
     const [diagramData, setDiagramData] = useState<UMLModel | null>(null);
     const [plantUML, setPlantUML] = useState<string>("");
     const [diagramType, setDiagramType] = useState<UMLDiagramType>("ClassDiagram");
@@ -15,7 +16,7 @@ const App2 = () => {
         if (editorContainer.current) {
             const options: ApollonOptions = {
                 type: diagramType,
-                model: diagramData || {
+                model: savedDiagram || {
                     type: diagramType,
                     elements: {},
                     relationships: {},
@@ -39,12 +40,37 @@ const App2 = () => {
         return () => {
             isMounted.current = false;
         };
-    }, [diagramData, diagramType]);
+    }, [savedDiagram, diagramType]);
+
+    useEffect(() => {
+        // Automatically load diagram if there is one in localStorage
+        const savedModel = localStorage.getItem('apollon-diagram');
+        let modelInLocalStorage: UMLModel | null;
+        if (savedModel) {
+            modelInLocalStorage = JSON.parse(savedModel) as UMLModel;
+            setSavedDiagram(modelInLocalStorage);
+            setPlantUML(generatePlantUML(modelInLocalStorage));
+        }
+    }, []);
+
+    useEffect(() => {
+        if (diagramData) {
+            const plantUMLCode = generatePlantUML(diagramData);
+            setPlantUML(plantUMLCode);
+        }
+    }, [diagramData]);
+
+    useEffect(() => {
+        if (editor) {
+            editor.subscribeToModelDiscreteChange(model => {
+                setDiagramData(model);
+            });
+        }
+    }, [editor]);
 
     const saveDiagram = () => {
         if (editor) {
             const model = editor.model;
-            setDiagramData(model);
             const modelDataJson = JSON.stringify(model);
             localStorage.setItem('apollon-diagram', modelDataJson);
             console.log(modelDataJson); // Log to console
@@ -57,7 +83,7 @@ const App2 = () => {
         if (editor && savedModel) {
             const model = JSON.parse(savedModel);
             editor.model = model;
-            setDiagramData(model);
+            setSavedDiagram(model);
             alert("Diagram loaded!");
         }
     };
