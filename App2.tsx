@@ -134,17 +134,6 @@ const App2 = () => {
                     }
                     plantUML += "}\n";
                     break;
-                case "Package":
-                    plantUML += `package ${element.name} {\n`;
-                    // Add elements inside the package
-                    for (const innerElementId in model.elements) {
-                        const innerElement = model.elements[innerElementId];
-                        if (innerElement.owner === element.id) {
-                            plantUML += `  ${innerElement.name}\n`;
-                        }
-                    }
-                    plantUML += "}\n";
-                    break;
                 default:
                     break;
             }
