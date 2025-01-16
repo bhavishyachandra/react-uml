@@ -100,7 +100,6 @@ const App2 = () => {
 
     const generatePlantUML = (model: UMLModel): string => {
         let plantUML = "@startuml\n";
-        const elementsInPackage = new Set<string>();
 
         // Convert elements
         for (const elementId in model.elements) {
@@ -109,26 +108,31 @@ const App2 = () => {
                 case "Class":
                 case "AbstractClass":
                 case "Interface":
-                case "Enumeration":
-                    if (element.owner) {
-                        elementsInPackage.add(elementId);
-                    } else {
-                        const plantUmlText = element.type === "AbstractClass" ? "abstract class" : element.type.toLowerCase();
-                        plantUML += `${plantUmlText} ${element.name} {\n`;
-                        if ('attributes' in element) {
-                            element.attributes.forEach(attrId => {
-                                const attr = model.elements[attrId];
-                                plantUML += `  ${attr.name}\n`;
-                            });
-                        }
-                        if ('methods' in element) {
-                            element.methods.forEach(methodId => {
-                                const method = model.elements[methodId];
-                                plantUML += `  ${method.name}\n`;
-                            });
-                        }
-                        plantUML += "}\n";
+                    const plantUmlText = element.type === "AbstractClass" ? "abstract class" : element.type;
+                    plantUML += `${plantUmlText} ${element.name} {\n`;
+                    if ('attributes' in element) {
+                        element.attributes.forEach(attrId => {
+                            const attr = model.elements[attrId];
+                            plantUML += `  ${attr.name}\n`;
+                        });
                     }
+                    if ('methods' in element) {
+                        element.methods.forEach(methodId => {
+                            const method = model.elements[methodId];
+                            plantUML += `  ${method.name}\n`;
+                        });
+                    }
+                    plantUML += "}\n";
+                    break;
+                case "Enumeration":
+                    plantUML += `enum ${element.name} {\n`;
+                    if ('attributes' in element) {
+                        element.attributes.forEach(attrId => {
+                            const attr = model.elements[attrId];
+                            plantUML += `  ${attr.name}\n`;
+                        });
+                    }
+                    plantUML += "}\n";
                     break;
                 case "Package":
                     plantUML += `package ${element.name} {\n`;
@@ -136,9 +140,7 @@ const App2 = () => {
                     for (const innerElementId in model.elements) {
                         const innerElement = model.elements[innerElementId];
                         if (innerElement.owner === element.id) {
-                            const innerElementType = innerElement.type.toLowerCase();
-                            plantUML += `  ${innerElementType} ${innerElement.name}\n`;
-                            elementsInPackage.add(innerElementId);
+                            plantUML += `  ${innerElement.name}\n`;
                         }
                     }
                     plantUML += "}\n";
@@ -153,9 +155,7 @@ const App2 = () => {
             const relationship = model.relationships[relationshipId];
             const source = model.elements[relationship.source.element];
             const target = model.elements[relationship.target.element];
-            if (!elementsInPackage.has(relationship.source.element) && !elementsInPackage.has(relationship.target.element)) {
-                plantUML += `${source.name} --> ${target.name}\n`;
-            }
+            plantUML += `${source.name} --> ${target.name}\n`;
         }
 
         plantUML += "@enduml";
