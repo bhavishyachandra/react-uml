@@ -118,57 +118,63 @@ const App2 = () => {
     };
 
     return (
-        <div>
-            <h1>React UML Converter</h1>
-            <div>
-                <label htmlFor="diagramType">Diagram Type: </label>
-                <select id="diagramType" value={diagramType} onChange={handleDiagramTypeChange}>
-                    <option value="Flowchart">Flowchart</option>
-                    <option value="ClassDiagram">Class Diagram</option>
-                    <option value="ObjectDiagram">Object Diagram</option>
-                    <option value="ActivityDiagram">Activity Diagram</option>
-                    <option value="UseCaseDiagram">Use Case Diagram</option>
-                    <option value="CommunicationDiagram">Communication Diagram</option>
-                    <option value="ComponentDiagram">Component Diagram</option>
-                    <option value="DeploymentDiagram">Deployment Diagram</option>
-                    <option value="PetriNet">Petri Net</option>
-                    <option value="ReachabilityGraph">Reachability Graph</option>
-                    <option value="SyntaxTree">Syntax Tree</option>
-                    <option value="BPMN">BPMN</option>
-                </select>
-            </div>
-            <div
-                ref={editorContainer}
-                style={{
-                    width: "100%",
-                    height: "500px",
-                    border: "1px solid #ddd",
-                    marginBottom: "20px",
-                }}
-            ></div>
-            <button onClick={saveDiagram} style={{ marginRight: "10px" }}>
-                Save Diagram
-            </button>
-            <button onClick={loadDiagram} disabled={!localStorage.getItem('apollon-diagram')}>
-                Load Diagram
-            </button>
-            <button onClick={convertToPlantUML} style={{ marginLeft: "10px" }} disabled={diagramType !== "ClassDiagram"}>
-                Convert to PlantUML
-            </button>
-            {plantUML && (
-                <div style={{ marginTop: "20px", position: "relative" }}>
-                    <h2>
-                        PlantUML Code
-                        <button onClick={copyToClipboard} style={{ marginLeft: "10px" }}>
-                            Copy
-                        </button>
-                    </h2>
-                    <textarea value={plantUML} readOnly style={{ width: "100%", height: "200px" }} />
+        <div style={{ display: "flex", height: "100vh" }}>
+            <div style={{ flex: 1, padding: "10px" }}>
+                <h1>React UML Converter</h1>
+                <div>
+                    <label htmlFor="diagramType">Diagram Type: </label>
+                    <select id="diagramType" value={diagramType} onChange={handleDiagramTypeChange}>
+                        <option value="Flowchart">Flowchart</option>
+                        <option value="ClassDiagram">Class Diagram</option>
+                        <option value="ObjectDiagram">Object Diagram</option>
+                        <option value="ActivityDiagram">Activity Diagram</option>
+                        <option value="UseCaseDiagram">Use Case Diagram</option>
+                        <option value="CommunicationDiagram">Communication Diagram</option>
+                        <option value="ComponentDiagram">Component Diagram</option>
+                        <option value="DeploymentDiagram">Deployment Diagram</option>
+                        <option value="PetriNet">Petri Net</option>
+                        <option value="ReachabilityGraph">Reachability Graph</option>
+                        <option value="SyntaxTree">Syntax Tree</option>
+                        <option value="BPMN">BPMN</option>
+                    </select>
                 </div>
-            )}
-            {diagramType !== "ClassDiagram" && (
-                <p style={{ color: "red" }}>Note: Saving to UML only works with Class Diagrams for now.</p>
-            )}
+                <div
+                    ref={editorContainer}
+                    style={{
+                        width: "100%",
+                        height: "calc(100% - 100px)",
+                        border: "1px solid #ddd",
+                        marginBottom: "20px",
+                    }}
+                ></div>
+            </div>
+            <div style={{ flex: 1, padding: "10px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div style={{ marginBottom: "20px" }}>
+                    <button onClick={saveDiagram} style={{ marginRight: "10px" }}>
+                        Save Diagram
+                    </button>
+                    <button onClick={loadDiagram} disabled={!localStorage.getItem('apollon-diagram')}>
+                        Load Diagram
+                    </button>
+                    <button onClick={convertToPlantUML} style={{ marginLeft: "10px" }} disabled={diagramType !== "ClassDiagram"}>
+                        Convert to PlantUML
+                    </button>
+                </div>
+                {plantUML && (
+                    <div style={{ width: "100%", position: "relative", height: "100%" }}>
+                        <h2>
+                            PlantUML Code
+                            <button onClick={copyToClipboard} style={{ marginLeft: "10px" }}>
+                                Copy
+                            </button>
+                        </h2>
+                        <textarea value={plantUML} readOnly style={{ width: "100%", height: "calc(100% - 50px)" }} />
+                    </div>
+                )}
+                {diagramType !== "ClassDiagram" && (
+                    <p style={{ color: "red" }}>Note: Saving to UML only works with Class Diagrams for now.</p>
+                )}
+            </div>
         </div>
     );
 };
